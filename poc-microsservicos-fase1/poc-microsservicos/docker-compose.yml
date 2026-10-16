@@ -1,0 +1,48 @@
+services:
+  gateway:
+    build:
+      context: ./services/gateway
+    container_name: poc-gateway
+    environment:
+      SERVICE_NAME: gateway
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  usuarios:
+    build:
+      context: ./services/usuarios
+    container_name: poc-usuarios
+    environment:
+      SERVICE_NAME: usuarios
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  pedidos:
+    build:
+      context: ./services/pedidos
+    container_name: poc-pedidos
+    environment:
+      SERVICE_NAME: pedidos
+    ports:
+      - "8002:8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
